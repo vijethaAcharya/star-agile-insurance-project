@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insureme-eta-deploy
+  labels:
+    app: insureme-eta-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: insureme-eta-app
+  template:
+    metadata:
+      labels:
+        app: insureme-eta-app
+    spec:
+      containers:
+      - name: insureme-eta-container
+        image: vijethaa/insureme-eta-app
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: insureme-eta-np-service
+  labels:
+    app: insureme-eta-app
+spec:
+  selector:
+    app: insureme-eta-app
+
+  type: NodePort
+  ports:
+  - nodePort: 31030  
+    port: 8082
+    targetPort: 8082
